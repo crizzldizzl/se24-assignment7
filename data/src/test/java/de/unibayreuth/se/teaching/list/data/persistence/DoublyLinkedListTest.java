@@ -234,6 +234,52 @@ class DoublyLinkedListTest {
         Assertions.assertEquals("0.9<->0.5<->0.4", list.toString());
     }
 
+    @Test
+    void testInsertIntoEmptyList()
+    {
+        // gegeben: die Liste ist leer
+        Assertions.assertTrue(list.isEmpty());
+        // wenn: ein neues Element in der Liste eingefügt wird
+        list.insert(new DoublyLinkedList.Element(0.42));
+        // dann: ist das neue Element sowohl Start auch als Ende, die Liste enthält genau ein Element und
+        //       das Element hat keine Nachbarn
+        Assertions.assertEquals(1, list.getLength());
+        Assertions.assertEquals(0.42, list.getStart().getValue());
+        Assertions.assertEquals(0.42, list.getEnd().getValue());
+        Assertions.assertNull(list.getStart().getNext());
+        Assertions.assertNull(list.getEnd().getPrev());
+    }
+
+    @Test
+    void testInsertDoubleValueAsNewMinimum() {
+        // gegeben: die Liste hat beliebige Elemente
+        list.append(new double[]{0.23, 0.42, 0.57, 0.83});
+        // wenn: ein neues kleinstes wert eingefügt wird
+        list.insert(0.11);
+        // dann: ist das neue Element das Startelement
+        Assertions.assertArrayEquals(new double[]{0.11, 0.23, 0.42, 0.57, 0.83}, list.asArray());
+    }
+
+    @Test
+    void testInsertDoubleValueAsNewMaximum() {
+        // gegeben: die Liste hat beliebige Elemente
+        list.append(new double[]{0.23, 0.42, 0.57, 0.83});
+        // wenn: ein neues größtes wert eingefügt wird
+        list.insert(0.99);
+        // dann: ist das neue Element das Endelement
+        Assertions.assertArrayEquals(new double[]{0.23, 0.42, 0.57, 0.83, 0.99}, list.asArray());
+    }
+
+    @Test
+    void testInsertDoubleValueInBetween() {
+        // gegeben: die Liste hat beliebige Elemente
+        list.append(new double[]{0.23, 0.83});
+        // wenn: ein neues Element zwischen dem größten und dem kleinsten eingefügt wird
+        list.insert(0.62);
+        // dann: Das neue element ist korrekt dazwischen plaziert
+        Assertions.assertArrayEquals(new double[]{0.23, 0.62 ,0.83}, list.asArray());
+    }
+
     /**
      * Helper method to test begin and end pointers of a doubly linked list
      * @param list List to test
